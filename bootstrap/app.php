@@ -60,6 +60,8 @@ $app->singleton(
 */
 
 $app->configure('app');
+//es la 
+$app->configure('auth');
 
 /*
 |--------------------------------------------------------------------------
@@ -73,7 +75,8 @@ $app->configure('app');
 */
 
 $app->middleware([
-     App\Http\Middleware\ExampleMiddleware::class
+     App\Http\Middleware\ExampleMiddleware::class,
+     App\Http\Middleware\Cors::class
  ]);
 
 $app->routeMiddleware([
@@ -96,6 +99,9 @@ $app->routeMiddleware([
  $app->register(App\Providers\EventServiceProvider::class);
  $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
  $app->register(\Anik\Form\FormRequestServiceProvider::class);
+ $app->register(Laravel\Passport\PassportServiceProvider::class);
+ $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -113,5 +119,8 @@ $app->router->group([
 ], function ($router) {
     require __DIR__.'/../routes/web.php';
 });
+
+//es la autenticacion
+\Dusterio\LumenPassport\LumenPassport::routes($app, ['prefix' => 'v1\oauth']);
 
 return $app;
